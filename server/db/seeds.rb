@@ -13,10 +13,10 @@ puts "🌱 Seeding spices..."
         Budget_event.create(
             household_member_id: household_member.id,
             expense_type: rand(1..2) == 1 ? "household" : "personal",
-            purchase_type: ["grocery", "housing", "utility"][rand(0..2)],
+            purchase_type: ["Housing", "Utilities", "Groceries", "Personal", "Eating Out", "Fun", "Health" "Pets", "Saving", "Investing", "Debt", "Other"][rand(0..11)],
             amount: rand(-2000..2000),
             purchase_date: Faker::Time.between(from: Date.today, to: Date.today+30),
-            notes: Faker::Lorem.words(number: rand(5..10))
+            notes: Faker::Lorem.sentence(word_count: rand(5..10))
         )
     end 
 end 
