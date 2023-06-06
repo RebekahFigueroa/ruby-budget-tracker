@@ -1,7 +1,8 @@
 class CreateBudgetEvents < ActiveRecord::Migration[6.1]
   def change
     create_table :budget_events do |t|
-      t.integer :household_member_id 
+      t.belongs_to :household_member
+      t.belongs_to :budget
       t.string :expense_type
       t.string :purchase_type
       t.integer :amount
