@@ -12,6 +12,11 @@ class ApplicationController < Sinatra::Base
     household_members.to_json
   end 
 
+  get "/household_members/:id" do 
+    household_member = Household_member.find(params[:id])
+    household_member.to_json
+  end 
+
   post "/household_members" do 
     household_member = Household_member.create(
       name: params[:name], 
