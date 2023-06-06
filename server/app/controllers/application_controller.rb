@@ -65,7 +65,7 @@ class ApplicationController < Sinatra::Base
       budget_event.to_json
   end 
 
-  dlete "/budget_events/:id" do 
+  delete "/budget_events/:id" do 
     budget_event = Budget_event.find(params[:id])
     budget_event.destroy
     budget_event.to_json
