@@ -21,9 +21,9 @@ puts "🌱 Seeding spices..."
 
     #create household budgets
     budget_ids = []
-    rand.(1..5).times do
+    rand(1..5).times do
         budget = Budget.create(
-            household_id: household_id, 
+            household_id: household.id, 
             amount: rand(1..5000),
             name: Faker::Lorem.sentence(word_count: rand(1..2)) + " Budget"
         )
