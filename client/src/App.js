@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./HomePage/Home";
+import NavBar from "./NavBar/NavBar";
+import HouseholdContextProvider from "./context/HouseholdContext";
 
-function App() {
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <HouseholdContextProvider>
+          <NavBar />
+          <Box sx={{ height: "calc(100vh - 3rem)" }}>
+            <Routes>
+              <Route path="/home" Component={Home} />
+            </Routes>
+          </Box>
+        </HouseholdContextProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
