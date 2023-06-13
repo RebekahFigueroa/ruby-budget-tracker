@@ -33,25 +33,19 @@ const Home = () => {
 
       <Box
         sx={{
+          mx: "auto",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
           marginTop: "2rem",
+          width: "80%",
+          mb: 4,
+          gap: 4,
         }}
       >
-        <Box
-          sx={{
-            width: "80%",
-            display: "flex",
-            justifyContent: "space-evenly",
-            mb: 4,
-          }}
-        >
-          {householdData.map((household) => (
-            <HouseholdCards key={household.id} {...household} />
-          ))}
-        </Box>
+        {householdData.map((household) => (
+          <HouseholdCards key={household.id} {...household} />
+        ))}
       </Box>
     </>
   );

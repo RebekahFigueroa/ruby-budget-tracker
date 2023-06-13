@@ -2,7 +2,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import { HouseholdContext } from "../context/HouseholdContext";
 
@@ -11,30 +10,29 @@ const HouseholdCards = (household) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
-        height: "25rem",
+        width: "25rem",
+        height: "15rem",
         display: "flex",
         flexDirection: "column",
+        padding: 1,
       }}
       onClick={() => setHousehold(household)}
     >
       <CardMedia
         sx={{ height: 200 }}
-        image="https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*"
+        image="https://t4.ftcdn.net/jpg/01/23/68/71/360_F_123687102_3rPakqjpruQ7hV0yImMYcSYBXGkTCwE5.jpg"
         title={household.name}
         Household
       />
       <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ rightMargin: "2rem" }}
-          >
-            {household.name}
-          </Typography>
-        </Box>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{ rightMargin: "2rem", textAlign: "center" }}
+        >
+          {household.name}
+        </Typography>
       </CardContent>
     </Card>
   );
