@@ -33,11 +33,10 @@ puts "🌱 Seeding spices..."
     #create budget 1 to 10 budget events for each household member
     rand(1..10).times do
         Budget_event.create(
-            household_member_id: household_member_ids[rand(0..household_member_ids.length)],
-            budget_id: budget_ids[rand(0..budget_ids.length)],
+            household_member_id: household_member_ids[rand(0..household_member_ids.length-1)],
+            budget_id: budget_ids[rand(0..budget_ids.length-1)],
             expense_type: rand(1..2) == 1 ? "household" : "personal",
-            purchase_type: ["Housing", "Utilities", "Groceries", "Personal", "Eating Out", "Fun", "Health" "Pets", "Saving", "Investing", "Debt", "Other"][rand(0..11)],
-            amount: rand(-2000..2000),
+            amount: rand(0..2000),
             purchase_date: Faker::Time.between(from: Date.today, to: Date.today+30),
             notes: Faker::Lorem.sentence(word_count: rand(5..10))
         )
@@ -45,3 +44,5 @@ puts "🌱 Seeding spices..."
 end 
 
 puts "✅ Done seeding!"
+
+

@@ -6,7 +6,7 @@ const Home = () => {
   const [householdData, setHouseholdData] = useState([]);
 
   useEffect(() => {
-    const fetchHouseholds = async () => {
+    const fetchHouseholds = () => {
       fetch("http://localhost:9292/households")
         .then((response) => response.json())
         .then((households) => setHouseholdData(households));

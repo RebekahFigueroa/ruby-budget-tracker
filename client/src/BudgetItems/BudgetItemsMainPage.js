@@ -1,4 +1,5 @@
-import { Grid, List, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { HouseholdContext } from "../context/HouseholdContext";
 import BudgetItemsForm from "./BudgetItemsForm";
@@ -10,7 +11,7 @@ const BudgetItemsMainPage = () => {
   const [budgetItemBeingEdited, setBudgetItemBeingEdited] = useState();
 
   useEffect(() => {
-    const fetchBudgetItems = async () => {
+    const fetchBudgetItems = () => {
       fetch(`http://localhost:9292/budgetItemsByHouseholdId/${household.id}`)
         .then((response) => response.json())
         .then((budgetItems) => setBudgetItemData(budgetItems));
@@ -62,11 +63,21 @@ const BudgetItemsMainPage = () => {
       <Grid item xs={3}>
         {" "}
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={1}>
         {" "}
       </Grid>
-      <Grid item xs={4}>
-        <List>
+      <Grid item xs={10}>
+        <Box
+          sx={{
+            mx: "auto",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            mb: 4,
+            gap: 4,
+            flexWrap: "wrap",
+          }}
+        >
           {budgetItemData.map((budgetItem) => (
             <BudgetItemsTable
               onDeleteClick={onDeleteClick}
@@ -75,9 +86,9 @@ const BudgetItemsMainPage = () => {
               {...budgetItem}
             />
           ))}
-        </List>
+        </Box>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={1}>
         {" "}
       </Grid>
     </Grid>

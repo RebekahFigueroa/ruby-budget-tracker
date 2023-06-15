@@ -50,6 +50,7 @@ const EditBudgetMainPage = () => {
       <Grid item xs={3}>
         {" "}
       </Grid>
+
       <Grid item xs={6}>
         <EditBudgetForm
           setBudgetData={setBudgetData}
@@ -60,6 +61,7 @@ const EditBudgetMainPage = () => {
       <Grid item xs={3}>
         {" "}
       </Grid>
+
       <Grid item xs={4}>
         {" "}
       </Grid>

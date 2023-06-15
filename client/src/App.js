@@ -7,6 +7,7 @@ import EditBudgetMainPage from "./EditBudget/EditBudgetMainPage";
 import Home from "./HomePage/Home";
 import ModifyHouseholdMainPage from "./Modify Household Member/ModifyHouseholdMainPage";
 import NavBar from "./NavBar/NavBar";
+import ViewBudgetMainPage from "./ViewBudget/ViewBudgetMainPage";
 import HouseholdContextProvider from "./context/HouseholdContext";
 
 const darkTheme = createTheme({
@@ -29,27 +30,30 @@ const darkTheme = createTheme({
   },
 });
 
+const BodyContent = () => {
+  return (
+    <>
+      <NavBar />
+      <Box sx={{ height: "calc(100vh - 3rem)" }}>
+        <Routes>
+          <Route path="/home" Component={Home} />
+          <Route path="/modify-budget" Component={EditBudgetMainPage} />
+          <Route path="/modify-household" Component={ModifyHouseholdMainPage} />
+          <Route path="/modify-budget-item" Component={BudgetItemsMainPage} />
+          <Route path="/view-budget" Component={ViewBudgetMainPage} />
+        </Routes>
+      </Box>
+    </>
+  );
+};
+
 const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <BrowserRouter>
         <HouseholdContextProvider>
-          <NavBar />
-          <Box sx={{ height: "calc(100vh - 3rem)" }}>
-            <Routes>
-              <Route path="/home" Component={Home} />
-              <Route path="/modify-budget" Component={EditBudgetMainPage} />
-              <Route
-                path="/modify-household"
-                Component={ModifyHouseholdMainPage}
-              />
-              <Route
-                path="modify-budget-item"
-                Component={BudgetItemsMainPage}
-              />
-            </Routes>
-          </Box>
+          <BodyContent />
         </HouseholdContextProvider>
       </BrowserRouter>
     </ThemeProvider>

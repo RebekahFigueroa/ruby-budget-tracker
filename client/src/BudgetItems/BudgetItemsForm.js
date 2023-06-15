@@ -1,4 +1,12 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 import { HouseholdContext } from "../context/HouseholdContext";
 
@@ -9,21 +17,57 @@ const BudgetItemsForm = ({
 }) => {
   const { household } = useContext(HouseholdContext);
   const [amount, setAmount] = useState("");
-  const [name, setName] = useState("");
   const [expenseType, setExpenseType] = useState("");
-  const [purchaseType, setPurchaseType] = useState("");
-  const [purchaseDate, setPurchaseDate] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState(dayjs("2023-05-12"));
   const [notes, setNotes] = useState("");
+  const [budgets, setBudgets] = useState([]);
+  const [selectedBudgetId, setSelectedBudgetId] = useState("");
+  const [householdMembers, setHouseholdMembers] = useState([]);
+  const [selectedHouseholdMember, setSelectedHouseholdMember] = useState("");
 
   useEffect(() => {
     if (budgetItemBeingEdited) {
+      console.log(budgetItemBeingEdited);
       setAmount(budgetItemBeingEdited.amount);
-      setExpenseType(budgetItemBeingEdited.expenseType);
-      setPurchaseType(budgetItemBeingEdited.purchaseType);
-      setPurchaseDate(budgetItemBeingEdited.purchaseDate);
+      setExpenseType(budgetItemBeingEdited.expense_type);
+      setPurchaseDate(dayjs(budgetItemBeingEdited.purchase_date));
       setNotes(budgetItemBeingEdited.notes);
+      setSelectedBudgetId(budgetItemBeingEdited.budget_id);
+      setSelectedHouseholdMember(budgetItemBeingEdited.household_member_id);
     }
   }, [budgetItemBeingEdited]);
+
+  useEffect(() => {
+    const fetchBudgets = () => {
+      fetch(`http://localhost:9292/budgetsByHouseholdId/${household.id}`)
+        .then((response) => response.json())
+        .then((budgets) => setBudgets(budgets));
+    };
+    fetchBudgets();
+  }, [household.id]);
+
+  useEffect(() => {
+    const fetchHouseholdMembers = () => {
+      fetch(
+        `http://localhost:9292/householdMembersByHouseholdId/${household.id}`
+      )
+        .then((response) => response.json())
+        .then((householdMembers) => setHouseholdMembers(householdMembers));
+    };
+    fetchHouseholdMembers();
+  }, [household.id]);
+
+  const handleSelectChangeBudget = (e) => {
+    setSelectedBudgetId(e.target.value);
+  };
+
+  const handleSelectChangeExpenseType = (e) => {
+    setExpenseType(e.target.value);
+  };
+
+  const handleSelectChangeHouseholdMember = (e) => {
+    setSelectedHouseholdMember(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,10 +79,11 @@ const BudgetItemsForm = ({
         method: budgetItemBeingEdited ? "PATCH" : "POST",
         body: JSON.stringify({
           household_id: household.id,
+          household_member_id: selectedHouseholdMember,
+          budget_id: selectedBudgetId,
+          expense_type: expenseType,
           amount: amount,
-          expenseType: expenseType,
-          purchaseType: purchaseType,
-          purchaseDate: purchaseDate,
+          purchase_date: purchaseDate,
           notes: notes,
         }),
         headers: {
@@ -57,9 +102,10 @@ const BudgetItemsForm = ({
         ]);
         setAmount("");
         setExpenseType("");
-        setPurchaseType("");
         setPurchaseDate("");
         setNotes("");
+        setSelectedBudgetId("");
+        setSelectedHouseholdMember("");
       })
       .catch((error) => {
         console.log(error.message);
@@ -76,20 +122,38 @@ const BudgetItemsForm = ({
       autoComplete="off"
     >
       <Grid container sx={{ width: "100%" }}>
-        <Grid item xs={12}>
-          <TextField
-            sx={{ width: "100%" }}
-            required
-            id="outlined-required"
-            label="Add name of your budget item"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Please keep <100 characters"
-            color="secondary"
-          />
+        <Grid item xs={3}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Expense Date"
+              value={purchaseDate}
+              onChange={(newPurchaseDate) => setPurchaseDate(newPurchaseDate)}
+            />
+          </LocalizationProvider>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={4.5}>
+          <FormControl sx={{ m: 1, width: "95%" }}>
+            <InputLabel id="simple-select-label">
+              Select Household Member
+            </InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={selectedHouseholdMember}
+              label="Select Household Member"
+              onChange={handleSelectChangeHouseholdMember}
+            >
+              {householdMembers.map((householdMember) => (
+                <MenuItem key={householdMember.id} value={householdMember.id}>
+                  {householdMember.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={4.5}>
           <TextField
             sx={{ width: "100%" }}
             required
@@ -101,9 +165,60 @@ const BudgetItemsForm = ({
             InputLabelProps={{
               shrink: true,
             }}
-            placeholder="Please use a positive number"
+            placeholder="ex. -2356"
           />
         </Grid>
+
+        <Grid item xs={6}>
+          <FormControl sx={{ m: 1, width: "95%" }}>
+            <InputLabel id="simple-select-label">Select Budget</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={selectedBudgetId}
+              label="Select Budget"
+              onChange={handleSelectChangeBudget}
+            >
+              {budgets.map((budget) => (
+                <MenuItem key={budget.id} value={budget.id}>
+                  {budget.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6}>
+          <FormControl sx={{ m: 1, width: "100%" }}>
+            <InputLabel id="simple-select-label">
+              Select Expense Type
+            </InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={expenseType}
+              label="Select Expense Type"
+              onChange={handleSelectChangeExpenseType}
+            >
+              <MenuItem value={"household"}>household</MenuItem>
+              <MenuItem value={"personal"}>personal</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            sx={{ width: "100%" }}
+            required
+            id="outlined-required"
+            label="Add notes about budget item"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Please keep <200 characters"
+            color="secondary"
+          />
+        </Grid>
+
         <Button
           variant="outlined"
           color="inherit"

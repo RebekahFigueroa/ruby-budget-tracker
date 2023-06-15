@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 2023_06_06_015332) do
     t.integer "household_member_id"
     t.integer "budget_id"
     t.string "expense_type"
-    t.string "purchase_type"
     t.integer "amount"
     t.datetime "purchase_date"
     t.string "notes"
@@ -28,7 +27,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_015332) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer "household_id"
-    t.decimal "amount"
+    t.integer "amount"
     t.string "name"
     t.index ["household_id"], name: "index_budgets_on_household_id"
   end
