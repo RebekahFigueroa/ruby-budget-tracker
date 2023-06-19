@@ -91,26 +91,22 @@ class ApplicationController < Sinatra::Base
     budgets.to_json
   end 
 
-  #used
   get "/budgets/:id" do 
     budget = Budget.find(params[:id])
     budget.to_json
   end 
 
-  # used
   get "/budgetsByHouseholdId/:householdId" do 
     budgets = Budget.where(household_id: params[:householdId])
     budgets.to_json
   end 
 
-  # used
    get "/budgetsSumByHouseholdId/:householdId" do 
     budget_amounts = Budget.where(household_id: params[:householdId]).map {|budget| budget.amount}
     budget_sum = budget_amounts.sum
     budget_sum.to_json
   end 
 
-   # used
   post "/budgets" do 
     budget = Budget.create(
       household_id: params[:household_id], 
@@ -120,7 +116,6 @@ class ApplicationController < Sinatra::Base
     budget.to_json
   end 
 
-   # used
   patch "/budgets/:id" do 
     budget = Budget.find(params[:id])
     budget.update(
@@ -130,7 +125,6 @@ class ApplicationController < Sinatra::Base
       budget.to_json
   end 
 
-   # used
   delete "/budgets/:id" do 
     budget = Budget.find(params[:id])
     budget.destroy
@@ -149,14 +143,12 @@ class ApplicationController < Sinatra::Base
     budget_event.to_json
   end 
 
-    # used
   get "/budgetItemsByHouseholdId/:householdId" do 
     budget_ids = Budget.where(household_id: params[:householdId]).map { |budget| budget.id }
     budget_events = Budget_event.where(budget_id: budget_ids)
     budget_events.to_json
   end 
 
-    # used
   get "/budgetItemsTotalPaidToHousehold/:householdId" do 
     budget_ids = Budget.where(household_id: params[:householdId]).map { |budget| budget.id }
     budget_events = Budget_event.where(budget_id: budget_ids )
@@ -165,11 +157,9 @@ class ApplicationController < Sinatra::Base
     household_sum.to_json
   end 
 
-    # used
   get "/budgetItemsTotalPaidToHouseholdPerMember/:household_member_id" do 
     Budget_event.where(household_member_id: params[:household_member_id]).map {|budget| budget.amount}.sum.to_json
   end 
-
 
   post "/budget_events" do 
     budget_event = Budget_event.create(
