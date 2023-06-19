@@ -20,9 +20,9 @@ Currently under development.
 
 # Installation
 
-1. Install Ruby
+1. Install Ruby `npm install`
 
-2. Start Ruby server
+2. Start Ruby server `npm run server`
 
 3. Add react `$ npm install react react-dom`
 
@@ -32,11 +32,11 @@ Currently under development.
 
 6. Add MUI icons `npm install @mui/icons-material`
 
-7. Start React
+7. Start React `npm start`
 
-# File Structure/ Components
+# DB Diagram
 
-# Demo
+![Project DB Diagram](/client/public/db_diagram.png)
 
 # Features
 
