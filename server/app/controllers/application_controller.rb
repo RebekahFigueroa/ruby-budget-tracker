@@ -17,26 +17,6 @@ class ApplicationController < Sinatra::Base
     household.to_json
   end 
 
-  post "/household" do 
-    household = Household.create(
-      name: params[:name])
-    household.to_json
-  end 
-
-  patch "/household/:id" do 
-    household = Household.find(params[:id])
-    household.updates(
-      name: params[:name]
-    )
-    household.to_json
-  end 
-
-  delete "/household/:id" do 
-    household = Household.find(params[:id])
-    household.destroy
-    household.to_json
-  end 
-
 
   # budget routes 
   get "/budgets" do 
