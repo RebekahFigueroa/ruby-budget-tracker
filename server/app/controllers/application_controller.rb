@@ -38,6 +38,53 @@ class ApplicationController < Sinatra::Base
   end 
 
 
+  # budget routes 
+  get "/budgets" do 
+    budgets = Budgets.all.order(:created_at)
+    budgets.to_json
+  end 
+
+  get "/budgets/:id" do 
+    budget = Budget.find(params[:id])
+    budget.to_json
+  end 
+
+  get "/budgetsByHouseholdId/:householdId" do 
+    budgets = Budget.where(household_id: params[:householdId])
+    budgets.to_json
+  end 
+
+   get "/budgetsSumByHouseholdId/:householdId" do 
+    budget_amounts = Budget.where(household_id: params[:householdId]).map {|budget| budget.amount}
+    budget_sum = budget_amounts.sum
+    budget_sum.to_json
+  end 
+
+  post "/budgets" do 
+    budget = Budget.create(
+      household_id: params[:household_id], 
+      amount: params[:amount],
+      name: params[:name]
+    )
+    budget.to_json
+  end 
+
+  patch "/budgets/:id" do 
+    budget = Budget.find(params[:id])
+    budget.update(
+      household_id: params[:household_id], 
+      amount: params[:amount],
+      name: params[:name])
+      budget.to_json
+  end 
+
+  delete "/budgets/:id" do 
+    budget = Budget.find(params[:id])
+    budget.destroy
+    budget.to_json
+  end 
+
+
   # household member routes 
   get "/household_members" do 
     household_members = Household_member.all.order(:created_at)
@@ -83,52 +130,6 @@ class ApplicationController < Sinatra::Base
     household_member = Household_member.find(params[:id])
     household_member.destroy
     household_member.to_json
-  end 
-
-  # budget routes 
-  get "/budgets" do 
-    budgets = Budgets.all.order(:created_at)
-    budgets.to_json
-  end 
-
-  get "/budgets/:id" do 
-    budget = Budget.find(params[:id])
-    budget.to_json
-  end 
-
-  get "/budgetsByHouseholdId/:householdId" do 
-    budgets = Budget.where(household_id: params[:householdId])
-    budgets.to_json
-  end 
-
-   get "/budgetsSumByHouseholdId/:householdId" do 
-    budget_amounts = Budget.where(household_id: params[:householdId]).map {|budget| budget.amount}
-    budget_sum = budget_amounts.sum
-    budget_sum.to_json
-  end 
-
-  post "/budgets" do 
-    budget = Budget.create(
-      household_id: params[:household_id], 
-      amount: params[:amount],
-      name: params[:name]
-    )
-    budget.to_json
-  end 
-
-  patch "/budgets/:id" do 
-    budget = Budget.find(params[:id])
-    budget.update(
-      household_id: params[:household_id], 
-      amount: params[:amount],
-      name: params[:name])
-      budget.to_json
-  end 
-
-  delete "/budgets/:id" do 
-    budget = Budget.find(params[:id])
-    budget.destroy
-    budget.to_json
   end 
 
 
